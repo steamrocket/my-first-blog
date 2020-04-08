@@ -1,0 +1,82 @@
+・プロジェクトの作成
+
+　仮想環境を実行している場所に以下のコマンドを実行する
+
+　Windows、mac、Linux　  　django-admin.exe startproject mysite .
+
+・各ファイルについて
+
+　■manage.pyはサイトの管理に役立つスクリプトです。 それを使用して、他のものをインストールすることなく、私たちのコンピュータ上でWebサーバーを起動することができます。
+
+　■settings.pyファイルには、ウェブサイトの設定が含まれています。
+　→場合によっては、タイムゾーンや言語、パスの追加を行う。
+　　※パスの場合は、STATIC_ROOT = os.path.join(BASE_DIR, 'static')を一番下に追記
+
+　→DEBUGがTrueに設定されており、ALLOWED_HOSTSが空の場合は、
+　['localhost', '127.0.0.1', '[::1]'] という3つのホストに対してチェックが行われます。 
+　このままの設定では、これから私たちがデプロイして使う 
+　PythonAnywhere のホストネームが含まれていません。
+  
+　なので、次のように設定する　＞　ALLOWED_HOSTS = ['127.0.0.1', '.pythonanywhere.com']
+
+　
+・データベースのセットアップ
+
+　python manage.py migrate
+
+・ウェブサーバの起動
+
+　python manage.py runserver
+
+　※もし失敗した場合は、次のコマンドを実行する　＞　python manage.py runserver 0:8000
+
+
+
+・アプリケーションの作成
+
+　python manage.py startapp "アプリケーション名"　　　　※blogが今回あてはまる
+
+　アプリケーションを作成したら、Django側にそれの使用を伝える必要がある
+　mysite/settings.pyを開き、設定を変更する。
+　INSTALLEND_APPSに以下のように追加する
+
+　INSTALLED_APPS = [　…
+　　　　　　　　　　　 'blog.apps.BlogConfig',]  　※blog →　apps.py →　BlogConfigというクラスの登録を行う
+
+
+
+
+・モデルでの変化について
+
+　少しでも設定等の変化があった場合は、コンソールで以下のコマンドを実行する
+
+　python manage.py makemigrations blog　　　※　settimgs.pyやmodels.py等の保存をしなければ
+　　　　　　　　　　　　　　　　　　　　　　　No installed app with label　のエラーが出る
+
+
+・データベースへの追加
+
+　移行ファイルをデータベースに追加　　　＞　　python manage.py migrate blog
+
+・administraotrの作成
+
+　admin.pyのページに以下のコードを追加します
+
+　　　from .models import Post
+
+　　　admin.site.register(Post)
+
+　また、管理者アカウントを作成するなら、以下のコマンドをうつ
+
+　　　 python manage.py createsuperuser
+
+　　　
+
+
+
+
+
+
+
+　
+
